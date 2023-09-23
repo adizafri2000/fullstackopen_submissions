@@ -1,52 +1,106 @@
-const Header = (props) => {
+import { useState } from 'react'
+
+const FeedbackButton = (props) => {
+  console.log('FeedbackButton props: ', props)
   return (
     <>
-      <h1>{props.course}</h1>
+      <button onClick={props.handler}>{props.text}</button>
+    </>
+  )
+
+}
+
+const Feedback = (props) => {
+  console.log('Feedback props: ', props)
+  return (
+    <>
+      <h2>give feedback</h2>
+      <FeedbackButton text={props.ratings[0].rating} handler={props.ratings[0].handler} />
+      <FeedbackButton text={props.ratings[1].rating} handler={props.ratings[1].handler} />
+      <FeedbackButton text={props.ratings[2].rating} handler={props.ratings[2].handler} />
     </>
   )
 }
 
-const Part = (props) => {
+const StatisticLine = (props) => {
+  console.log('StatisticLine props: ', props)
   return (
     <>
-      <p>{props.part} {props.exercises}</p>
+      <td>{props.text}</td>
+      <td>{props.value}</td>
     </>
   )
 }
 
-const Content = (props) => {
+const Statistics = (props) => {
+  console.log('Statistics props: ', props)
+  const good = props.ratings[0].value
+  const neutral = props.ratings[1].value
+  const bad = props.ratings[2].value
+  const totalFeedback = good + neutral + bad
+  const average = (totalFeedback === 0) ? 0 : ((good * 1 + neutral * 0 + bad * -1) / totalFeedback)
+  const positiveFeedback = (totalFeedback === 0) ? '0%' : `${((good / totalFeedback) * 100)}%`
+  if (totalFeedback === 0)
+    return (<p>No feedback given</p>)
   return (
     <>
-      <Part part={props.part1} exercises={props.exercises1} />
-      <Part part={props.part2} exercises={props.exercises2} />
-      <Part part={props.part3} exercises={props.exercises3} />
-    </>
-  )
-}
-
-const Total = (props) => {
-  return (
-    <>
-      <p>Number of exercises {props.e1 + props.e2 + props.e3}</p>
+      <h2>statistics</h2>
+      <table>
+        <tbody>
+          <tr><StatisticLine text='good' value={good} /></tr>
+          <tr><StatisticLine text='neutral' value={neutral} /></tr>
+          <tr><StatisticLine text='bad' value={bad} /></tr>
+          <tr><StatisticLine text='all' value={totalFeedback} /></tr>
+          <tr><StatisticLine text='average' value={average} /></tr>
+          <tr><StatisticLine text='positive' value={positiveFeedback} /></tr>
+        </tbody>
+      </table>
     </>
   )
 }
 
 const App = () => {
-  const course = 'Half Stack application development'
-  const part1 = 'Fundamentals of React'
-  const exercises1 = 10
-  const part2 = 'Using props to pass data'
-  const exercises2 = 7
-  const part3 = 'State of a component'
-  const exercises3 = 14
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  const handleGoodClicks = () => {
+    const updatedValue = good + 1
+    setGood(updatedValue)
+  }
+  const handleNeutralClicks = () => {
+    const updatedValue = neutral + 1
+    setNeutral(updatedValue)
+  }
+  const handleBadClicks = () => {
+    const updatedValue = bad + 1
+    setBad(updatedValue)
+  }
+
+  const ratings = [
+    {
+      rating: 'good',
+      value: good,
+      handler: handleGoodClicks
+    },
+    {
+      rating: 'neutral',
+      value: neutral,
+      handler: handleNeutralClicks
+    },
+    {
+      rating: 'bad',
+      value: bad,
+      handler: handleBadClicks
+    }
+  ]
 
   return (
-    <div>
-      <Header course={course} />
-      <Content part1={part1} exercises1={exercises1} part2={part2} exercises2={exercises2} part3={part3} exercises3={exercises3} />
-      <Total e1={exercises1} e2={exercises2} e3={exercises3} />
-    </div>
+    <>
+      <Feedback ratings={ratings} />
+      <Statistics ratings={ratings} />
+    </>
   )
 }
 

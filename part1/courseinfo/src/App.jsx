@@ -1,8 +1,8 @@
-const Header = (props) => {
-  console.log(`Header: props: ${props.course}`)
+const Header = ({ course }) => {
+  console.log(`Header: props: ${course}`)
   return (
     <>
-      <h1>{props.course}</h1>
+      <h1>{course}</h1>
     </>
   )
 }
@@ -16,13 +16,13 @@ const Part = ({ part }) => {
   )
 }
 
-const Content = (props) => {
-  console.log(`Content: props: ${props.parts}`)
+const Content = ({ parts }) => {
+  console.log(`Content: props: ${parts}`)
   return (
     <>
-      <Part part={props.parts[0]} />
-      <Part part={props.parts[1]} />
-      <Part part={props.parts[2]} />
+      <Part part={parts[0]} />
+      <Part part={parts[1]} />
+      <Part part={parts[2]} />
     </>
   )
 }
