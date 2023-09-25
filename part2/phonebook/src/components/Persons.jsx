@@ -1,8 +1,14 @@
 const Persons = (props) => {
     console.log('Persons props: ', props)
-    const { persons } = props
+    const { persons, deleteHandler } = props
+
     return (
-        persons.map(person => <p key={person.name}>{person.name} {person.number}</p>)
+        persons.map(person =>
+            <p key={person.id}>
+                {person.name} {person.number}
+                <button onClick={() => deleteHandler(person)}>delete</button>
+            </p >
+        )
     )
 }
 
