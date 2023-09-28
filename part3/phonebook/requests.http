@@ -1,0 +1,50 @@
+# Course part 3 done on IntelliJ IDEA Ultimate, API tested using IDE's HTTP Client Tool
+
+### View info
+# 200: Returns <p>Phonebook has info for ${totalPeople} people</p><p>${timeStamp}</p>
+GET http://localhost:3001/info
+
+### Get all persons
+# 200: List of all persons
+GET http://localhost:3001/api/persons
+
+### Get single person with ID:1
+# 200: JSON of single person with person.id=1
+GET http://localhost:3001/api/persons/1
+
+### Get non-existent person with ID:9999999999
+# 404
+GET http://localhost:3001/api/persons/9999999999
+
+### Create new person without body items
+# 400: name missing/number missing
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "number": "01234567899"
+}
+
+### Create new person with provided body items
+# 200: JSON of created person with {id, name, number}
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Bob",
+  "number": "01234567899"
+}
+
+### Create new person with same name (Run after creating person with provided parameters)
+# 400: Bob already exists. Name must be unique
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Bob",
+  "number": "01234567899"
+}
+
+### Delete existing/non-existing person with ID:4
+# 204
+DELETE http://localhost:3001/api/persons/4017573324
