@@ -6,7 +6,7 @@ npm install
 npm run build
 
 # Copy dist folder to backend directory
-cp dist ../backend
+cp -r dist ../backend
 
 # Change to backend dir
 cd ../backend
