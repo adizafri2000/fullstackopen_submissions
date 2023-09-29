@@ -70,9 +70,14 @@ const App = () => {
         .create(newPerson)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          setMessageColour(successColour)
+          setNotificationMessage(`Added ${newName}`)
         })
-      setMessageColour(successColour)
-      setNotificationMessage(`Added ${newName}`)
+        .catch(error => {
+          console.log(error.response.data.error)
+          setMessageColour(failedColour)
+          setNotificationMessage(error.response.data.error)
+        })
       setTimeout(() => setNotificationMessage(null), 3000)
     }
     setNewName('')

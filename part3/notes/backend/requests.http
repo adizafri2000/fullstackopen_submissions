@@ -25,7 +25,7 @@ GET http://localhost:3001/api/notes/invalidid
 GET http://localhost:3001/api/thisendpointdoesnotexist
 
 ### Create new note without body.content
-# 400: name missing/number missing
+# 400: "error": "Note validation failed: content: Path `content` is required."
 POST http://localhost:3001/api/notes
 Content-Type: application/json
 

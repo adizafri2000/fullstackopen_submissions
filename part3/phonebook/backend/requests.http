@@ -25,7 +25,7 @@ GET http://localhost:3001/api/persons/65163e767eef022d49038750
 GET http://localhost:3001/api/persons/totallynotcompliantid
 
 ### Create new person without name in body
-# 400: "error": "name missing"
+# 400: "error": "Person validation failed: name: Path `name` is required."
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
@@ -48,7 +48,7 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "name": "Intellij HTTP Client3",
+  "name": "Intellij HTTP Client {{$timestamp}}",
   "number": "01234567899"
 }
 
@@ -62,13 +62,24 @@ Content-Type: application/json
   "number": "{{$timestamp}}"
 }
 
-### Update person with different number for ID: 6516f56c3a5d7ccebcb53ffa
+### Update person with different invalid number for ID: 6516f56c3a5d7ccebcb53ffa
+# 400: "error": "Validation failed: number: Invalid phone number format"
+PUT http://localhost:3001/api/persons/6516f56c3a5d7ccebcb53ffa
+Content-Type: application/json
+
+{
+  "name": "Put endpoint tester",
+  "number": "{{$timestamp}}"
+}
+
+### Update person with different valid number for ID: 6516f56c3a5d7ccebcb53ffa
 # 200: JSON of updated person with {name: Put endpoint tester, number, id}
 PUT http://localhost:3001/api/persons/6516f56c3a5d7ccebcb53ffa
 Content-Type: application/json
 
 {
-  "number": "{{$timestamp}}"
+  "name": "Put endpoint tester",
+  "number": "040-22{{$random.integer(0,10)}}{{$random.integer(0,10)}}{{$random.integer(0,10)}}{{$random.integer(0,10)}}{{$random.integer(0,10)}}{{$random.integer(0,10)}}"
 }
 
 ### Delete existing/non-existing person with compliant mongo ID:6516f56c3a5d7ccebcb53fff
