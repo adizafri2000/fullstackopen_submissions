@@ -1,5 +1,9 @@
 # Course part 3 done on IntelliJ IDEA Ultimate, API tested using IDE's HTTP Client Tool
 
+### Base check
+# 200
+GET http://localhost:3001/
+
 ### View info
 # 200: Returns <p>Phonebook has info for ${totalPeople} people</p><p>${timeStamp}</p>
 GET http://localhost:3001/info
@@ -8,16 +12,20 @@ GET http://localhost:3001/info
 # 200: List of all persons
 GET http://localhost:3001/api/persons
 
-### Get single person with ID:1
-# 200: JSON of single person with person.id=1
-GET http://localhost:3001/api/persons/1
+### Get single person with mongodb-compliant ID:65163e767eef022d49038758
+# 200: JSON of single person {name, number, id:65163e767eef022d49038758}
+GET http://localhost:3001/api/persons/65163e767eef022d49038758
 
-### Get non-existent person with ID:9999999999
+### Get non-existent person with mongo-compliant ID:65163e767eef022d49038750
 # 404
-GET http://localhost:3001/api/persons/9999999999
+GET http://localhost:3001/api/persons/65163e767eef022d49038750
 
-### Create new person without body items
-# 400: name missing/number missing
+### Get non-existent person with non-compliant mongo ID:totallynotcompliantid
+# 400: "error": "malformatted id"
+GET http://localhost:3001/api/persons/totallynotcompliantid
+
+### Create new person without name in body
+# 400: "error": "name missing"
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
@@ -25,26 +33,48 @@ Content-Type: application/json
   "number": "01234567899"
 }
 
-### Create new person with provided body items
-# 200: JSON of created person with {id, name, number}
+### Create new person without number in body
+# 400: "error": "number missing"
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "name": "Bob",
+  "name": "Intellij HTTP Client"
+}
+
+### Create new person with provided body items
+# 200: JSON of created person with {name, number, id}
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Intellij HTTP Client3",
   "number": "01234567899"
 }
 
 ### Create new person with same name (Run after creating person with provided parameters)
-# 400: Bob already exists. Name must be unique
+# 400: "error": "Intellij HTTP Client already exists. Name must be unique"
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "name": "Bob",
-  "number": "01234567899"
+  "name": "Intellij HTTP Client",
+  "number": "{{$timestamp}}"
 }
 
-### Delete existing/non-existing person with ID:4
+### Update person with different number for ID: 6516f56c3a5d7ccebcb53ffa
+# 200: JSON of updated person with {name: Put endpoint tester, number, id}
+PUT http://localhost:3001/api/persons/6516f56c3a5d7ccebcb53ffa
+Content-Type: application/json
+
+{
+  "number": "{{$timestamp}}"
+}
+
+### Delete existing/non-existing person with compliant mongo ID:6516f56c3a5d7ccebcb53fff
 # 204
-DELETE http://localhost:3001/api/persons/4017573324
+DELETE http://localhost:3001/api/persons/6516f56c3a5d7ccebcb53fff
+
+### Delete existing/non-existing person with non-compliant mongo ID:noncompliantID
+# 400: "error": "malformatted id"
+DELETE http://localhost:3001/api/persons/noncompliantID

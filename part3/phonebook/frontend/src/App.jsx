@@ -10,7 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [filter, setFilter] = useState('')
-  const [notificationMessage, setNotificationMessage] = useState('sample message')
+  const [notificationMessage, setNotificationMessage] = useState(null)
   const [messageColour, setMessageColour] = useState('green')
 
   const successColour = 'green'
@@ -117,7 +117,12 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notificationMessage} color={messageColour} />
+
+      {(notificationMessage) ?
+          <Notification message={notificationMessage} color={messageColour} /> :
+          ''
+      }
+
       <Filter text={filter} handler={handleFilterChange} />
 
       <h2>Add new person</h2>
