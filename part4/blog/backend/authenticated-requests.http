@@ -1,0 +1,161 @@
+# Course part 3 done on IntelliJ IDEA Ultimate, API tested using IDE's HTTP Client Tool
+
+### Create new user
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username" : "new-user-{{$random.email}}",
+  "name": "random",
+  "password": "test"
+}
+
+### Create new user without username field
+# 400: "error": "User validation failed: username: Path `username` is required."
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "name": "random",
+  "password": "test"
+}
+
+### Create new user without password field/password less than 3 characters
+# 422: "error": "Password must be given with minimum length of 3 characters long"
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username" : "ne",
+  "name": "random",
+  "password": "test"
+}
+
+### Create new user with username less than 3 characters
+POST http://localhost:3003/api/users
+# 400: "error": "User validation failed: username: Path `username` <given username> is shorter than the minimum allowed length (3)."
+Content-Type: application/json
+
+{
+  "username" : "{{$random.alphabetic(2)}}",
+  "name": "random",
+  "password": "test"
+}
+
+### Create new user with existing username
+# 400: "error": "User validation failed: username: Error, expected `username` to be unique. Value: `kiana`"
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username" : "kiana",
+  "name": "random",
+  "password": "test"
+}
+
+### Get users
+GET http://localhost:3003/api/users
+
+### Login with newly-created username
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "new-user-QrqrJrpMVpqF7@uFMO.nl",
+  "password": "test"
+}
+
+### Login with existing kiana's username (do not edit)
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "kiana",
+  "password": "kaslana"
+}
+
+### Login with non-existent username/password
+# 401: "error": "invalid username or password"
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "raiden",
+  "password": "mei"
+}
+
+### Create new blog with token
+# 201: json of created blog {title, author, url, likes, user, id}
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldy11c2VyLVFycXJKcnBNVnBxRjdAdUZNTy5ubCIsImlkIjoiNjUxYmRhZWYxN2FiN2IwYWNlZjZlMDM2IiwiaWF0IjoxNjk2MzI3NzY4LCJleHAiOjE2OTYzMzEzNjh9.EpFuuaFkufoeygkR-ldnmxxLmOp53adwMkv8YdsteVg
+
+{
+  "title": "Blog title {{$timestamp}}",
+  "url": "https://fullstackopen.com/en/part4/token_authentication#exercises-4-15-4-23",
+  "author": "Rosken"
+}
+
+### Create new blog with kiana's token
+# 201: json of created blog {title, author, url, likes, user, id
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpYW5hIiwiaWQiOiI2NTFiZGIxOTE3YWI3YjBhY2VmNmUwM2EiLCJpYXQiOjE2OTY0MDgzMDAsImV4cCI6MTY5NjQxMTkwMH0.Fm9HqWgCQjxovPx0IZo7fyM3TNuzZmZaE9f8YDUI4YE
+
+{
+  "title": "How to Build A Meta Fire Team Edition {{$timestamp}}",
+  "url": "https://www.thegamer.com/honkai-impact-3rd-beginners-guide/",
+  "author": "Theresa Apocalypse",
+  "likes": {{$random.integer()}}
+}
+
+### Create new blog with kiana's EXPIRED token
+# 401: "error": "token expired"
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpYW5hIiwiaWQiOiI2NTFiZGIxOTE3YWI3YjBhY2VmNmUwM2EiLCJpYXQiOjE2OTYzMjYxNTksImV4cCI6MTY5NjMyNjE4OX0.ysz6g4sPHrhUi3AjvavYJcCXpX8yHWHKs2BMJBMH2AI
+
+{
+  "title": "How to build meta fire team",
+  "url": "https://www.thegamer.com/honkai-impact-3rd-beginners-guide/",
+  "author": "Theresa Apocalypse",
+  "likes": {{$random.integer()}}
+}
+
+### Create new blog with kiana's INVALID token
+# 401: "error": "invalid token"
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer ayJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpYW5hIiwiaWQiOiI2NTFiZGIxOTE3YWI3YjBhY2VmNmUwM2EiLCJpYXQiOjE2OTYzMjYxNTksImV4cCI6MTY5NjMyNjE4OX0.ysz6g4sPHrhUi3AjvavYJcCXpX8yHWHKs2BMJBMH2AI
+
+{
+  "title": "How to build meta fire team",
+  "url": "https://www.thegamer.com/honkai-impact-3rd-beginners-guide/",
+  "author": "Theresa Apocalypse",
+  "likes": {{$random.integer()}}
+}
+
+### Create new blog without token
+# 401: "error": "jwt must be provided"
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "content": "This blog is posted to the database from Intellij IDEA HTTP Client tool at {{$isoTimestamp}}"
+}
+
+### Delete blog without token
+# 401: "error": "jwt must be provided"
+DELETE http://localhost:3003/api/blogs/651c3db94df58c56ae12edb2
+
+### Delete kiana's blog with kiana's token
+# 204
+DELETE http://localhost:3003/api/blogs/651c3db94df58c56ae12edb2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpYW5hIiwiaWQiOiI2NTFiZGIxOTE3YWI3YjBhY2VmNmUwM2EiLCJpYXQiOjE2OTYzNDY1NDQsImV4cCI6MTY5NjM1MDE0NH0.sjQcW9N5AXuKi-t5WtoujkbwGbmaZSOWyshBeQvlK7A
+
+### Delete kiana's blog with someone else's token
+# 403: "error": "forbidden request on resource" (if blog still exists)
+DELETE http://localhost:3003/api/blogs/651c3db94df58c56ae12edb2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldy11c2VyLVFycXJKcnBNVnBxRjdAdUZNTy5ubCIsImlkIjoiNjUxYmRhZWYxN2FiN2IwYWNlZjZlMDM2IiwiaWF0IjoxNjk2MzQ3NzA2LCJleHAiOjE2OTYzNTEzMDZ9.ltmvr34KWwXjwLIrggSKXJoQ38n1Xj8DvCEtAZC-XfI

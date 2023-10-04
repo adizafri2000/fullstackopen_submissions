@@ -1,9 +1,5 @@
 # Course part 3 done on IntelliJ IDEA Ultimate, API tested using IDE's HTTP Client Tool
 
-### View root api route
-# 200: Returns <h1>Hello World!</h1>
-GET http://localhost:3001/api
-
 ### Get all notes
 # 200: List of all notes
 GET http://localhost:3001/api/notes
@@ -36,6 +32,17 @@ Content-Type: application/json
 ### Create new note with provided body content with default type (false)
 # 200: JSON of created note with {content=content, important=False, id}
 POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "content": "This note is posted to the database from Intellij IDEA HTTP Client tool at {{$isoTimestamp}}",
+  "userId" : "651b95edda43b09694264d09"
+}
+
+### Create new note with token
+# 200: JSON of created note with {content=content, important=False, id}
+POST http://localhost:3001/api/notes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpYW5hIiwiaWQiOiI2NTFiOTVlZGRhNDNiMDk2OTQyNjRkMDkiLCJpYXQiOjE2OTYzMDg3ODJ9.GbVucVYzdVyRgVpgoD9sIcpA2SiWysfg4kvdU6QPBPA
 Content-Type: application/json
 
 {
