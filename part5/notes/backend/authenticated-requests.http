@@ -1,0 +1,68 @@
+# Course part 3 done on IntelliJ IDEA Ultimate, API tested using IDE's HTTP Client Tool
+
+### Create new user
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "username" : "new-user-{{$random.email}}",
+  "name": "random",
+  "password": "test"
+}
+
+### Login with newly-created username
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+  "username": "new-user-J9FHeFnwA@lwRksB.cn",
+  "password": "test"
+}
+
+### Login with existing username (do not edit)
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+  "username": "kiana",
+  "password": "kaslana"
+}
+
+### Login with non-existent username/password
+# 401: "error": "invalid username or password"
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+  "username": "raiden",
+  "password": "mei"
+}
+
+### Create new note with token
+# 201: json of created note {content, important, user, id}
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldy11c2VyLUo5RkhlRm53QUBsd1Jrc0IuY24iLCJpZCI6IjY1MWJhNTU2YjZjMDI2YzkzMWVlMGNlZiIsImlhdCI6MTY5NjMxMDY1NH0.J2hOz1rRbyY47OtWoc2f30x68bSeBCLyc6fL_MKYKeM
+
+{
+  "content": "This note is posted to the database from Intellij IDEA HTTP Client tool at {{$isoTimestamp}}"
+}
+
+### Create new note with kiana's token
+# 201: json of created note {content, important, user, id}
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpYW5hIiwiaWQiOiI2NTFiOTVlZGRhNDNiMDk2OTQyNjRkMDkiLCJpYXQiOjE2OTYzMTA3MDh9.DNy-UcEdxnNA6foJhSC2SRq6GelABXaVRBvLFLeLCr0
+
+{
+  "content": "This is Kiana's note posted to the database from Intellij IDEA HTTP Client tool at {{$isoTimestamp}}"
+}
+
+### Create new note without
+# 401: "error": "jwt must be provided"
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "content": "This note is posted to the database from Intellij IDEA HTTP Client tool at {{$isoTimestamp}}"
+}

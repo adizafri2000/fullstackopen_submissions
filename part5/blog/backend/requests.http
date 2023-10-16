@@ -1,0 +1,59 @@
+# Course part 3 done on IntelliJ IDEA Ultimate, API tested using IDE's HTTP Client Tool
+
+### Get all blogs
+# 200: List of all blogs
+GET http://localhost:3003/api/blogs
+
+### Get single blog with ID:651951382a94426140efd775
+# 200: JSON of single blog with blog.id=651951382a94426140efd775
+GET http://localhost:3003/api/blogs/651951382a94426140efd775
+
+### Get non-existent blog with ID:65162ace54bf62553acae767
+# 404
+GET http://localhost:3003/api/blogs/65162ace54bf62553acae767
+
+### Get non-existent blog with non-compliant mongo ID format, ID:invalidid
+# 400: "error": "malformatted id"
+GET http://localhost:3003/api/blogs/invalidid
+
+### Request to non-existent endpoint
+# 404: "error": "unknown endpoint"
+GET http://localhost:3003/api/thisendpointdoesblogxist
+
+### Create new blog without body.content
+# 400: "error": "Note validation failed: content: Path `content` is required."
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "important": true
+}
+
+### Create new blog with provided body content with default type (false)
+# 200: JSON of created blog with {content=content, important=False, id}
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Sample title {{$timestamp}}",
+  "author": "Sample author {{$random.email}}",
+  "url": "https://www.youtube.com/",
+  "likes": {{$random.integer()}}
+}
+
+### Update blog likes for ID: 651951382a94426140efd775
+# 200: JSON of updated blog with {content, important, id}
+PUT http://localhost:3003/api/blogs/651951382a94426140efd775
+Content-Type: application/json
+
+{
+  "likes": {{$random.integer()}}
+}
+
+### Delete existing/non-existing blog with non-compliant mongo ID:4017573324
+# 400: "error": "malformatted id"
+DELETE http://localhost:3003/api/blogs/4017573324
+
+### Delete existing/non-existing blog compliant mongo ID:6516e4bced644246339419f0
+# 204
+DELETE http://localhost:3003/api/blogs/6519508d2a94426140efd76e
