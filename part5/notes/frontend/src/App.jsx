@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react'
 import Note from './components/Note'
 import noteService from './services/notes'
 import loginService from './services/login.jsx'
-import LoginForm from "./components/LoginForm.jsx"
-import NoteForm from "./components/NoteForm.jsx";
-import Togglable from "./components/Togglable.jsx";
+import LoginForm from './components/LoginForm.jsx'
+import NoteForm from './components/NoteForm.jsx'
+import Togglable from './components/Togglable.jsx'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
 
@@ -21,10 +21,10 @@ const App = () => {
 
     useEffect(() => {
         noteService
-        .getAll()
-        .then(initialNotes => {
-        setNotes(initialNotes)
-        })
+            .getAll()
+            .then(initialNotes => {
+                setNotes(initialNotes)
+            })
     }, [])
 
     useEffect(() => {
@@ -130,7 +130,7 @@ const App = () => {
 
     const logoutHandler = () => {
         window.localStorage.removeItem('loggedNoteappUser')
-        window.location.reload()
+        setUser(null)
     }
 
     return (
@@ -159,7 +159,7 @@ const App = () => {
             {/*list notes*/}
             <ul>
                 {notesToShow.map(note =>
-                <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)}/>
+                    <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)}/>
                 )}
             </ul>
 
@@ -168,4 +168,4 @@ const App = () => {
     )
 }
 
-export default App 
+export default App

@@ -54,7 +54,7 @@ Content-Type: application/json
 }
 
 ### Get users
-GET http://localhost:3003/api/users
+GET http://localhost:3003/api/blogs
 
 ### Login with newly-created username
 POST http://localhost:3003/api/login
@@ -100,7 +100,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld
 # 201: json of created blog {title, author, url, likes, user, id
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpYW5hIiwiaWQiOiI2NTFiZGIxOTE3YWI3YjBhY2VmNmUwM2EiLCJpYXQiOjE2OTY0MDgzMDAsImV4cCI6MTY5NjQxMTkwMH0.Fm9HqWgCQjxovPx0IZo7fyM3TNuzZmZaE9f8YDUI4YE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpYW5hIiwiaWQiOiI2NTFiZGIxOTE3YWI3YjBhY2VmNmUwM2EiLCJpYXQiOjE2OTc1MTMxNzAsImV4cCI6MTY5NzUxNjc3MH0.B8t0LX2KN0tmvhxaORr9ZXtI_nm88GzjjVN6Jmsf-ng
 
 {
   "title": "How to Build A Meta Fire Team Edition {{$timestamp}}",
